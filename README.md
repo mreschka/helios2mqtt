@@ -36,4 +36,4 @@ MIT © [Markus Reschka](https://github.com/mreschka)
 
 ## Credits
 
-Thanks to [hobbyquaker](https://github.com/hobbyquaker) for your qork on smarthome an hm2mqtt! This work is based on your ideas. First start for this was [xyz2mqtt-skeleton](https://github.com/hobbyquaker/xyz2mqtt-skeleton).
+Thanks to [hobbyquaker](https://github.com/hobbyquaker) for your work on smarthome an hm2mqtt! This work is based on your ideas. First start for this was [xyz2mqtt-skeleton](https://github.com/hobbyquaker/xyz2mqtt-skeleton).
