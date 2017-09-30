@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/cmdLine.bat
+/kwl-modbus_gateway_82269_0714_d_e_f.xlsx
+/package-lock.json
