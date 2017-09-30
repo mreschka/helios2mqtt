@@ -1,0 +1,42 @@
+{
+  "name": "helios2mqtt",
+  "private": false,
+  "version": "0.0.1",
+  "description": "Helios Easy Controls modbus tcp to mqtt-smarthome daemon.",
+  "main": "index.js",
+  "bin": {
+    "helios2mqtt": "./index.js"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mreschka/helios2mqtt"
+  },
+  "keywords": [
+    "mqtt",
+    "smarthome",
+    "helios",
+    "easycontrols",
+    "modbus"
+  ],
+  "author": {
+    "name": "Markus Reschka",
+    "email": "markus@reschka.com",
+    "url": "https://github.com/mreschka"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mreschka/helios2mqtt/issues"
+  },
+  "homepage": "https://github.com/mreschka/helios2mqtt",
+  "dependencies": {
+    "async": "^2.4.1",
+    "jsmodbus": "^2.1.2",
+    "mqtt": "^2.11.0",
+    "yalm": "^4.0.2",
+    "yargs": "^6.5.0"
+  }
+}

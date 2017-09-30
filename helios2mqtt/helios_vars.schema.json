@@ -1,0 +1,133 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "https://github.com/mreschka/helios2mqtt/raw/master/helios_vars.schema.json",
+  "properties": {
+    "variables": {
+      "items": {
+        "properties": {
+          "access": {
+            "description": "Access to variable via modbus (read an/or write)",
+            "enum": [
+              "RW",
+              "R",
+              "W"
+            ],
+            "maxLength": 2,
+            "minLength": 1,
+            "type": "string"
+          },
+          "comment": {
+            "description": "Short for this variable",
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "description": "Description for this variable",
+            "minLength": 1,
+            "type": "string"
+          },
+          "enum_vals": {
+            "description": "If vartyp is enum, this shall be an array of enum entries.",
+            "items": {
+              "properties": {
+                "name": {
+                  "description": "Name of enum entry",
+                  "maxLength": 32,
+                  "minLength": 2,
+                  "type": "string"
+                },
+                "value": {
+                  "description": "Value of enum entry",
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "eunm_name": {
+            "description": "If vartyp is enum, this shall be a name of that enum.",
+            "maxLength": 255,
+            "minLength": 2,
+            "type": "string"
+          },
+          "max": {
+            "description": "Maximum value if variable is numeric",
+            "type": "number"
+          },
+          "min": {
+            "description": "Minimum value if variable is numeric",
+            "type": "number"
+          },
+          "name": {
+            "description": "Name of variable.",
+            "maxLength": 255,
+            "minLength": 2,
+            "pattern": "[a-z_]*",
+            "type": "string"
+          },
+          "datalen": {
+            "description": "Length of data when read from modbus.",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "factor": {
+            "default": 1,
+            "description": "Factor is the factor to multiply raw value from modbus with, in order to get physical value (phy=raw*factor).",
+            "type": "number"
+          },
+          "unit": {
+            "description": "Unit of varibale for display.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "updateinterval": {
+            "description": "Interval at which the variable shall be polled and updated in seconds (0=no update).",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "variable": {
+            "description": "Name of variable in modbus access.",
+            "maxLength": 6,
+            "minLength": 6,
+            "pattern": "^v[0-9]{5}$",
+            "type": "string"
+          },
+          "vartype": {
+            "description": "Type of variable in modbus access.",
+            "type": "string",
+            "enum": [
+              "bitfield",
+              "bool",
+              "enum",
+              "float",
+              "int",
+              "string"
+            ]
+          },
+          "modbuslen": {
+            "description": "Length of data when written to modbus.",
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "datalen",
+          "updateinterval",
+          "variable",
+          "vartype",
+          "modbuslen"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  }
+}
