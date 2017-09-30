@@ -1,10 +1,10 @@
 # helios2mqtt
 
-[![NPM version](https://badge.fury.io/js/xyz2mqtt-skeleton.svg)](http://badge.fury.io/js/xyz2mqtt-skeleton)
-[![Dependency Status](https://img.shields.io/gemnasium/hobbyquaker/xyz2mqtt-skeleton.svg?maxAge=2592000)](https://gemnasium.com/github.com/hobbyquaker/xyz2mqtt-skeleton)
 [![License][mit-badge]][mit-url]
 
-> a skeleton for creation of mqtt interface daemons following [mqtt-smarthome](https://github.com/mqtt-smarthome) architecure
+> A deamon for syncing a helios easy controls system like my KWL EC 220D to mqtt following the [mqtt-smarthome](https://github.com/mqtt-smarthome) architecure.
+
+At the momemnt only status is working, set is not implemented so far.
 
 ### Getting started
 
