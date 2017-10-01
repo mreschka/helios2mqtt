@@ -61,7 +61,7 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     this.modbusClient = modbus.client.tcp.complete({
         'host': modbusIp,
         'port': modbusPort,
-        'autoReconnect': true,
+        'autoReconnect': false,
         'reconnectTimeout': 1000,
         'timeout': 5000,
         'unitId': 180
@@ -79,22 +79,23 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
         self.modbusConnected = false;
         self.queue.pause();
         self.emit('disconnect');
+        setTimeout(function () {
+            log.error('Reconnecting modbus slave after disconnect.');
+            self.modbusClient.reconnect();
+        }, 2500);
     });
 
     this.modbusClient.on('error', function (err) {
-        log.error('Helios error with modbus slave.');
+        log.error('Helios error with modbus slave. Killing all queued tasks. Data loss possible.');
         log.error(err);
         self.modbusConnected = false;
+        self.queue.kill();
+        self.queue = async.queue(queueWorker.bind(this), 1);
         self.queue.pause();
-        self.emit('error', err);
-        setImmediate(function () {
-            log.error('Disconnecting modbus slave because of previous error.');
-            self.modbusClient.disconnect();
-            setTimeout(function () {
-                log.error('Reconnecting modbus slave after previous error.');
-                self.modbusClient.connect();
-            }, 1000);
-        });
+        setTimeout(function () {
+            log.error('Reconnecting modbus slave after previous error.');
+            self.modbusClient.reconnect();
+        }, 2500);
     });
 
     log.debug('Helios: modbus client trigger connect');
