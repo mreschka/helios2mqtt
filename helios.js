@@ -68,23 +68,33 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     });
 
     this.modbusClient.on('connect', function () {
-        log.debug('Helios connected to modbus slave.');
+        log.info('Helios connected to modbus slave.');
         self.modbusConnected = true;
         self.queue.resume();
         self.emit('connect');
     });
    
     this.modbusClient.on('disconnect', function () {
-        log.debug('Helios disconnected from modbus slave.');
+        log.warn('Helios disconnected from modbus slave.');
         self.modbusConnected = false;
         self.queue.pause();
         self.emit('disconnect');
     });
 
     this.modbusClient.on('error', function (err) {
-
+        log.error('Helios error with modbus slave.');
         log.error(err);
-
+        self.modbusConnected = false;
+        self.queue.pause();
+        self.emit('error', err);
+        setImmediate(function () {
+            log.error('Disconnecting modbus slave because of previous error.');
+            self.modbusClient.disconnect();
+            setTimeout(function () {
+                log.error('Reconnecting modbus slave after previous error.');
+                self.modbusClient.connect();
+            }, 1000);
+        });
     });
 
     log.debug('Helios: modbus client trigger connect');
@@ -97,7 +107,7 @@ Functions
 ****************************/
 
 Helios.prototype.get = function(varName, reqId) {
-    log.info('Helios reading variable: ' + varName + ' req id ' + reqId);
+    log.debug('Helios reading variable: ' + varName + ' req id ' + reqId);
 
     let self = this;
 
@@ -122,7 +132,7 @@ Helios.prototype.get = function(varName, reqId) {
 }
 
 Helios.prototype.set = function(varName, value) {
-    log.info('Helios writing variable: ' + varName + ' value ' + value);
+    log.debug('Helios writing variable: ' + varName + ' value ' + value);
 
     let self = this;
 

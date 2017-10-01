@@ -41,10 +41,6 @@ helios.on('get', function (varName, res) {
     }
 });
 
-helios.on('connect', function () {
-    
-});
-
 process.on('SIGINT', stop);
 process.on('SIGTERM', stop);
 
@@ -67,10 +63,10 @@ mqtt.on('connect', function () {
     log.info('mqtt connected', config.mqttUrl);
     mqtt.publish(config.name + '/connected', '1', { retain: true }); // TODO eventually set to '2' if target system already connected
 
-    log.info('mqtt subscribe', config.name + '/set/#');
+    log.debug('mqtt subscribe', config.name + '/set/#');
     mqtt.subscribe(config.name + '/set/#');
 
-    log.info('mqtt subscribe', config.name + '/get/#');
+    log.debug('mqtt subscribe', config.name + '/get/#');
     mqtt.subscribe(config.name + '/get/#');
 
     postConnected();
@@ -163,17 +159,5 @@ function postConnected() {
 }
 
 function stop() {
-/* TODO
-    const cmdQueue = [];
-    Object.keys(stopIface).forEach(iface => {
-        cmdQueue.push(stopIface[iface]);
-    });
-    async.parallel(cmdQueue, () => {
-        process.exit(0);
-    });
-    setTimeout(() => {
-        process.exit(1);
-    }, 2500);
-*/
     process.exit(1);
 }

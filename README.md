@@ -7,7 +7,7 @@
 
 Based on the idea of [mqtt-smarthome](https://github.com/mqtt-smarthome) and especially on the work of hobbyquaker [hm2mqtt.js](https://github.com/hobbyquaker/hm2mqtt.js) I decided to build a bridge for my helios KWL system to mqtt.
 
-At the momemnt only "status" reading is working, set anything is not implemented so far.
+At the moment only "status" reading is working, set anything is not implemented so far.
 
 Please read the --help output for commandline options. I tried to stick as close as possible to hm2mqtt.js.
 
