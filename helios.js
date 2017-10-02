@@ -77,8 +77,8 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     this.modbusClient.on('disconnect', function () {
         log.warn('Helios disconnected from modbus slave.');
         self.modbusConnected = false;
-        self.queue.pause();
         self.emit('disconnect');
+        self.queue.pause();
         setTimeout(function () {
             log.error('Reconnecting modbus slave after disconnect.');
             self.modbusClient.reconnect();
@@ -89,6 +89,7 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
         log.error('Helios error with modbus slave. Killing all queued tasks. Data loss possible.');
         log.error(err);
         self.modbusConnected = false;
+        self.emit('disconnect');
         self.queue.kill();
         self.queue = async.queue(queueWorker.bind(this), 1);
         self.queue.pause();

@@ -21,7 +21,7 @@ As hobbyquaker I also suggest to use pm2 to manage the hm2mqtt process (start on
 
 `helios2mqtt --help`
 
-`helios2mqtt 0.0.5
+```helios2mqtt 0.0.5
 Helios Easy Controls modbus tcp to mqtt-smarthome daemon.
 
 Usage: helios2mqtt [options]
@@ -46,7 +46,7 @@ Optionen:
   -s, --json-values          Publish values on status at mqtt as json including
                              additional info                           [boolean]
   -u, --mqtt-username        mqtt broker username
-`
+```
 ### Customization
 
 If you would like to change the variables which are read from the helios modbus tcp interface have a look at the file helios_vars.json file (if you installed using above npm install -g you will find it at /usr/lib/node_modules/helios2mqtt/helios_vars.json). If someone can tell me how to make that file "user customizable" in an more elegant way instead of -j option, e.g. in user's home directory please send me an email!
@@ -70,9 +70,9 @@ helios2mqtt pushes all the readings from helios KWL to one subtopic each. You ca
 helios2mqtt listens to get requests here. You can request status updates for specific readings here. The response will be published as status.
 
 * helios/connected
-	* 0 means not connected (using a will, so this means deamon is not running)
-	* 1 means connected to mqtt but no connection to helios
-	* 2 means connected to both, mqtt and helios KWL
+    * 0 means not connected (using a will, so this means deamon is not running)
+    * 1 means connected to mqtt but no connection to helios
+    * 2 means connected to both, mqtt and helios KWL
 
 * helios/set/xxx
 Will be used for changing variables in helios KWL. Not implmented (jet).
