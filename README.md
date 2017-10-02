@@ -55,11 +55,11 @@ If you would like to change the variables which are read from the helios modbus 
 
 * Simple Example, local mqtt server, no auth:
 `/usr/bin/helios2mqtt -a 192.168.4.30`
-starts the deamon, connects to helios modbus KWL at 192.168.4.30 and publishes at helios/status/# of the local mqtt (port 1883)
+starts the deamon, connects to helios modbus KWL at `192.168.4.30` and publishes at `helios/status/#` of the local mqtt (port 1883)
 
 * Complex Example, local mqtt server, with auth:
 `/usr/bin/helios2mqtt -a 192.168.4.30 -b 502 -m mqtt://192.168.4.10 -u heliosMqtt -p seCRe7 -v warn -n helios220D -s -j /home/smarthome/helios_vars.json`
-starts the deamon, connects to helios modbus KWL at 192.168.4.30 and publishes at helios/status/# of the mqtt server at 192.168.4.10 using the credantials above. Published will be json strings with additional infos. Will only print warning and errors. Uses a customized version of the variables definition in home of smarthome user.
+starts the deamon, connects to helios modbus KWL at `192.168.4.30` and publishes at `helios/status/#` of the mqtt server at `192.168.4.10` using the credentials above. Published will be json strings with additional infos. Will only print warning and errors. Uses a customized version of the variables definition in home of smarthome user.
 
 ### mqtt topics
 
