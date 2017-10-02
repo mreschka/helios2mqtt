@@ -11,15 +11,13 @@ At the moment only "status" reading is working, set anything is not implemented 
 
 Please read the --help output for commandline options. I tried to stick as close as possible to hm2mqtt.js.
 
-### Getting started
-
-* Install
+## Install
 
 `sudo npm install -g helios2mqtt`
 
 As hobbyquaker I also suggest to use pm2 to manage the hm2mqtt process (start on system boot, manage log files, ...). There is a really good howto at the [mqtt-smarthome repo](https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/howtos/homematic.md)
 
-* Usage
+### Usage
 
 `helios2mqtt --help`
 
@@ -49,43 +47,35 @@ Optionen:
                              additional info                           [boolean]
   -u, --mqtt-username        mqtt broker username
 `
-* Customization
+### Customization
 
 If you would like to change the variables which are read from the helios modbus tcp interface have a look at the file helios_vars.json file (if you installed using above npm install -g you will find it at /usr/lib/node_modules/helios2mqtt/helios_vars.json). If someone can tell me how to make that file "user customizable" in an more elegant way instead of -j option, e.g. in user's home directory please send me an email!
 
-* Examples
+### Examples
 
-    * Simple Example, local mqtt server, no auth:
-
+* Simple Example, local mqtt server, no auth:
 `/usr/bin/helios2mqtt -a 192.168.4.30`
-
 Starts the deamon, connects to helios modbus KWL at 192.168.4.30 and publishes at helios/status/# of the local mqtt (port 1883)
 
-    * Complex Example, local mqtt server, with auth:
-
+* Complex Example, local mqtt server, with auth:
 `/usr/bin/helios2mqtt -a 192.168.4.30 -b 502 -m mqtt://192.168.4.10 -u heliosMqtt -p seCRe7 -v warn -n helios220D -s -j /home/smarthome/helios_vars.json`
-
 Starts the deamon, connects to helios modbus KWL at 192.168.4.30 and publishes at helios/status/# of the mqtt server at 192.168.4.10 using the credantials above. Published will be json strings with additional infos. Will only print warning and errors. Uses a customized version of the variables definition in home of smarthome user.
 
-* mqtt topics
+### mqtt topics
 
-    * helios/status/xxx
+* helios/status/xxx
+helios2mqtt pushes all the readings from helios KWL to one subtopic each. You can choose using -s Option if you would like to simply have the value or a json string with more info like timestamp and explanation.
 
-	helios2mqtt pushes all the readings from helios KWL to one subtopic each. You can choose using -s Option if you would like to simply have the value or a json string with more info like timestamp and explanation.
+* helios/get/xxx
+helios2mqtt listens to get requests here. You can request status updates for specific readings here. The response will be published as status.
 
-    * helios/get/xxx
+* helios/connected
+	* 0 means not connected (using a will, so this means deamon is not running)
+	* 1 means connected to mqtt but no connection to helios
+	* 2 means connected to both, mqtt and helios KWL
 
-	helios2mqtt listens to get requests here. You can request status updates for specific readings here. The response will be published as status.
-
-	* helios/cnnected
-
-	    * 0 means not connected (using a will, so this means deamon is not running)
-		* 1 means connected to mqtt but no connection to helios
-		* 2 means connected to both, mqtt and helios KWL
-
-	* helios/set/xxx
-
-	Will be used for changing variables in helios KWL. Not implmented (jet).
+* helios/set/xxx
+Will be used for changing variables in helios KWL. Not implmented (jet).
 
 ## License
 
