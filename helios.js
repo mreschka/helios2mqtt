@@ -188,11 +188,15 @@ function queueWorker(task, callback) {
                         callback();
                     }, function (error) {
                         log.debug('Helios get task modbus read error varname ' + task.heliosVar.variable + ': ' + error);
+                        task.self.modbusConnected = false;
+                        task.self.emit('disconnect');
                         callback(error);
                     });
 
             }, function (error) {
                 log.debug('Helios get task modbus write error varname ' + task.heliosVar.variable + ': ' + error);
+                task.self.modbusConnected = false;
+                task.self.emit('disconnect');
                 callback(error);
                 });
 
