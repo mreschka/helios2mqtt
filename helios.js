@@ -75,14 +75,12 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     });
    
     this.modbusClient.on('disconnect', function () {
-        log.warn('Helios disconnected from modbus slave.');
+        log.warn('Helios disconnected from modbus slave. Killing all queued tasks. Data loss possible.');
         self.modbusConnected = false;
         self.emit('disconnect');
+        self.queue.kill();
+        self.queue = async.queue(queueWorker.bind(this), 1);
         self.queue.pause();
-        setTimeout(function () {
-            log.error('Reconnecting modbus slave after disconnect.');
-            self.modbusClient.reconnect();
-        }, 2500);
     });
 
     this.modbusClient.on('error', function (err) {
@@ -93,14 +91,17 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
         self.queue.kill();
         self.queue = async.queue(queueWorker.bind(this), 1);
         self.queue.pause();
-        setTimeout(function () {
-            log.error('Reconnecting modbus slave after previous error.');
-            self.modbusClient.reconnect();
-        }, 2500);
     });
 
     log.debug('Helios: modbus client trigger connect');
     this.modbusClient.connect();
+
+    setInterval(function () {
+        if (!self.modbusConnected) {
+            log.info('Reconnecting modbus slave after disconnect.');
+            self.modbusClient.reconnect();
+        }
+    }, 10000);
 }
 util.inherits(Helios, EventEmitter);
 

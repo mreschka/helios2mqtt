@@ -75,7 +75,21 @@ helios2mqtt listens to get requests here. You can request status updates for spe
     * `2` means connected to both, mqtt and helios KWL
 
 * `helios/set/xxx`:
-Will be used for changing variables in helios KWL. Not implmented (jet).
+Will be used for changing variables in helios KWL. Not implmented (yet).
+
+### FHEM integration
+
+Based on this deamon it's easy to add your Helios easycontrols modbus tcp device to FHEM:
+
+1. Define a MQTT IODev and set everything up, see FHEM Wiki: https://wiki.fhem.de/wiki/MQTT_Einf%C3%BChrung.
+2. Add a MQTT_DEVICE:
+```
+define helios MQTT_DEVICE
+attr helios retain 0
+attr helios qos 0
+attr helios autoSubscribeReadings helios/status/+
+attr helios subscribeReading_connected helios/connected
+```
 
 ## License
 

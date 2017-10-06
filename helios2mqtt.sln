@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "helios2mqtt", "helios2mqtt\helios2mqtt.njsproj", "{9B13EC0A-C148-4E29-8968-BF5DF466796A}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "helios2mqtt", "helios2mqtt.njsproj", "{9B13EC0A-C148-4E29-8968-BF5DF466796A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
