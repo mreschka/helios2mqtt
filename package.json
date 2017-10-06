@@ -1,7 +1,7 @@
 {
   "name": "helios2mqtt",
   "private": false,
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Helios Easy Controls modbus tcp to mqtt-smarthome daemon.",
   "main": "index.js",
   "bin": {

@@ -98,8 +98,9 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
 
     setInterval(function () {
         if (!self.modbusConnected) {
+            self.queue.pause();
             log.info('Reconnecting modbus slave after disconnect.');
-            self.modbusClient.reconnect();
+            self.modbusClient.connect();
         }
     }, 10000);
 }
