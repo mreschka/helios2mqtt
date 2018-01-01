@@ -98,6 +98,10 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
 
     setInterval(function () {
         if (!self.modbusConnected) {
+            self.modbusClient.close();
+            log.warn('Helios disconnected from modbus slave. Killing all queued tasks. Data loss possible.');
+            self.queue.kill();
+            self.queue = async.queue(queueWorker.bind(this), 1);
             self.queue.pause();
             log.info('Reconnecting modbus slave after disconnect.');
             self.modbusClient.connect();
@@ -201,7 +205,28 @@ function queueWorker(task, callback) {
                 callback(error);
                 });
 
-//        } else if (task.method == 'set') {
+        } else if (task.method == 'set') {
+
+            log.debug('Helios set task executing modbus write for varname ' + task.heliosVar.variable + ' with value ' + task.value.toString);
+
+            const buf = Buffer.alloc(task.heliosVar.modbuslen*2);
+            buf.fill(0);
+            Buffer.write(task.heliosVar.variable + '=', 0, 7, 'ascii');
+
+            Buffer.write(7, value.toString, value.toString.length, 'ascii');
+
+            log.debug('Helios set task modbus write raw value: ' + buf.toString);
+            task.self.modbusClient.writeMultipleRegisters(1, buf).then(function (resp) {
+
+                log.debug('Helios set task modbus write for varname ' + task.heliosVar.variable + ' with value ' + task.value.toString + ' fininshed: ' + JSON.stringify(resp));
+                callback();
+
+            }, function (error) {
+                log.debug('Helios set task modbus write error varname ' + task.heliosVar.variable + ' with value ' + task.value.toString + ': ' + error);
+                task.self.modbusConnected = false;
+                task.self.emit('disconnect');
+                callback(error);
+            });
 
         } else {
             callback(new Error('Helios task method ' + task.method + ' not (yet) implemented.'));
