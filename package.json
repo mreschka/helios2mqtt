@@ -1,7 +1,7 @@
 {
   "name": "helios2mqtt",
   "private": false,
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Helios Easy Controls modbus tcp to mqtt-smarthome daemon.",
   "main": "index.js",
   "bin": {
@@ -33,10 +33,10 @@
   },
   "homepage": "https://github.com/mreschka/helios2mqtt",
   "dependencies": {
-    "async": "^2.4.1",
-    "jsmodbus": "^2.1.2",
-    "mqtt": "^2.11.0",
-    "yalm": "^4.0.2",
+    "async": "^2.6.0",
+    "jsmodbus": "^2.4.0",
+    "mqtt": "^2.15.0",
+    "yalm": "^4.0.0",
     "yargs": "^6.5.0"
   }
 }
