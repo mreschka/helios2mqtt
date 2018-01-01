@@ -75,7 +75,7 @@ helios2mqtt listens to get requests here. You can request status updates for spe
     * `2` means connected to both, mqtt and helios KWL
 
 * `helios/set/xxx`:
-Will be used for changing variables in helios KWL. Not implmented (yet).
+Can be used for changing variables in helios KWL. Set is now implemented but without any checks. The published value will be wirtten as it is. Please read [Helios easyControls Modbus Gateway TCP/IP](https://www.heliosventilatoren.de/mbv/kwl_modbus_easycontrols_82269-001_0917.pdf) for the correct format and/or use the information in helios_Vers.json.
 
 ### FHEM integration
 

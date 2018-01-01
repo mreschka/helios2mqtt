@@ -151,7 +151,7 @@ Helios.prototype.set = function(varName, value) {
             log.err(err);
         } else {
             log.debug('Helios set succeded for ' + task.heliosVar.name + ' now schedule reading it back.');
-            this.get(task.heliosVar.name, null);
+            self.get(task.heliosVar.name, null);
         }
     });
 }
@@ -207,22 +207,22 @@ function queueWorker(task, callback) {
 
         } else if (task.method == 'set') {
 
-            log.debug('Helios set task executing modbus write for varname ' + task.heliosVar.variable + ' with value ' + task.value.toString);
+            log.debug('Helios set task executing modbus write for varname ' + task.heliosVar.variable + ' with value ' + task.value.toString('ascii'));
 
             const buf = Buffer.alloc(task.heliosVar.modbuslen*2);
             buf.fill(0);
-            Buffer.write(task.heliosVar.variable + '=', 0, 7, 'ascii');
+            buf.write(task.heliosVar.variable + '=', 0, 7, 'ascii');
 
-            Buffer.write(7, value.toString, value.toString.length, 'ascii');
+            buf.write(task.value.toString('ascii'), 7, task.value.toString('ascii').length, 'ascii');
 
-            log.debug('Helios set task modbus write raw value: ' + buf.toString);
+            log.debug('Helios set task modbus write raw value: ' + buf.toString('ascii'));
             task.self.modbusClient.writeMultipleRegisters(1, buf).then(function (resp) {
 
-                log.debug('Helios set task modbus write for varname ' + task.heliosVar.variable + ' with value ' + task.value.toString + ' fininshed: ' + JSON.stringify(resp));
+                log.debug('Helios set task modbus write for varname ' + task.heliosVar.variable + ' with value ' + task.value.toString('ascii') + ' fininshed: ' + JSON.stringify(resp));
                 callback();
 
             }, function (error) {
-                log.debug('Helios set task modbus write error varname ' + task.heliosVar.variable + ' with value ' + task.value.toString + ': ' + error);
+                log.debug('Helios set task modbus write error varname ' + task.heliosVar.variable + ' with value ' + task.value.toString('ascii') + ': ' + error);
                 task.self.modbusConnected = false;
                 task.self.emit('disconnect');
                 callback(error);
