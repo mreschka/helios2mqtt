@@ -6,7 +6,7 @@
       "name": "artikelbezeichnung",
       "description": "Artikelbezeichnung",
       "updateinterval": 3600,
-      "access": "RW",
+      "access": "R",
       "vartype": "string",
       "datalen": 31,
       "modbuslen": 20,
@@ -17,7 +17,7 @@
       "name": "bestellnummer",
       "description": "Bestellnummer",
       "updateinterval": 3600,
-      "access": "RW",
+      "access": "R",
       "vartype": "string",
       "datalen": 16,
       "modbuslen": 12,
@@ -43,7 +43,7 @@
       "vartype": "string",
       "datalen": 2,
       "modbuslen": 5,
-      "comment": "WR: 'de', 'en', 'fr', 'sl'"
+      "comment": "RW: 'de', 'en', 'fr', 'sl'"
     },
     {
       "variable": "v00004",
