@@ -84,7 +84,7 @@ Can be used for changing variables in helios KWL. Set is now implemented but wit
 
 ### watchdog feature
 
-The Watchdog Feature monitors mqtt-publish activity of mqtt2helios. I suggest using at least 60 seoncds. You can turn this on in order to let mqtt2helios exit as a last measure if all reconnect attempts fail (i.e. twice the watchdog time went by without any successful publish, either because of a problem with modbus connection to helios or a connection problem to mqtt server). Use witch care - you have to make sure the process gets restarted after it exits, e.g. using pm2 or similar.
+The watchdog monitors mqtt-publish activity of helios2mqtt. I suggest using at least 60 seconds. You can turn this on in order to let helios2mqtt exit as a last measure if all reconnect attempts fail (i.e. twice the watchdog time went by without any successful publish. Reasons could for exmaple be a problem with modbus connection to helios and no data from helios or a connection problem to mqtt server. Use witch care - you have to make sure the process gets restarted after it exits, e.g. using pm2 or similar.
 
 ### FHEM integration
 
