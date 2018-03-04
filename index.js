@@ -161,12 +161,14 @@ Functions
 function watchdogTrigger() {
     if (config.watchdog > 0) {
         if (watchdogTriggered) {
-            log.error('Watchdog time is up for another 60 seconds, exiting');
+            log.error('Watchdog time is up for another period, exiting');
             stop();
         } else {
-            log.warn('Watchdog time is up, no data from helios for 60 seconds. Trying to read dummy value.');
+            log.warn('Watchdog time is up, no data from helios for watchdog time. Trying to read dummy value.');
             helios.get("v00000", "wdg");
-        }    
+            watchdogTriggered = true;
+            watchdogReload();
+        }
     }
 }
 

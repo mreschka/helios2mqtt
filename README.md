@@ -22,7 +22,7 @@ As hobbyquaker I also suggest to use pm2 to manage the hm2mqtt process (start on
 
 `helios2mqtt --help`
 
-```helios2mqtt 0.0.5
+```helios2mqtt 0.0.12
 Helios Easy Controls modbus tcp to mqtt-smarthome daemon.
 
 Usage: helios2mqtt [options]
@@ -44,9 +44,13 @@ Optionen:
   -n, --name                 instance name. used as mqtt client id and as prefix
                              for connected topic            [Standard: "helios"]
   -p, --mqtt-password        mqtt broker password
+  -q, --mqtt-qos             mqtt qos setting               [Zahl] [Standard: 0]
+  -r, --mqtt-no-retain       disable mqtt retain                       [boolean]
   -s, --json-values          Publish values on status at mqtt as json including
                              additional info                           [boolean]
   -u, --mqtt-username        mqtt broker username
+  -w, --watchdog             timeout for internal watchdog in seconds (default:
+                             60s)                                  [Standard: 0]
 ```
 ### Customization
 
