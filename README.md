@@ -82,6 +82,10 @@ helios2mqtt listens to get requests here. You can request status updates for spe
 * `helios/set/xxx`:
 Can be used for changing variables in helios KWL. Set is now implemented but without any checks. The published value will be written as it is. Please read [Helios easyControls Modbus Gateway TCP/IP](https://www.heliosventilatoren.de/mbv/kwl_modbus_easycontrols_82269-001_0917.pdf) for the correct format and/or use the information in helios_Vers.json.
 
+### watchdog feature
+
+The Watchdog Feature monitors mqtt-publish activity of mqtt2helios. I suggest using at least 60 seoncds. You can turn this on in order to let mqtt2helios exit as a last measure if all reconnect attempts fail (i.e. twice the watchdog time went by without any successful publish, either because of a problem with modbus connection to helios or a connection problem to mqtt server). Use witch care - you have to make sure the process gets restarted after it exits, e.g. using pm2 or similar.
+
 ### FHEM integration
 
 Based on this deamon it's easy to add your Helios easycontrols modbus tcp device to FHEM:
