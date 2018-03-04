@@ -8,7 +8,7 @@
 
 Based on the idea of [mqtt-smarthome](https://github.com/mqtt-smarthome) and especially on the work of hobbyquaker [hm2mqtt.js](https://github.com/hobbyquaker/hm2mqtt.js) I decided to build a bridge for my helios KWL system to mqtt.
 
-Set is now implemented but without any checks. The published value will be wirtten as it is.
+Set is now implemented but without any checks. The published value will be written as it is.
 
 Please read the --help output for commandline options. I tried to stick as close as possible to hm2mqtt.js.
 
@@ -76,7 +76,7 @@ helios2mqtt listens to get requests here. You can request status updates for spe
     * `2` means connected to both, mqtt and helios KWL
 
 * `helios/set/xxx`:
-Can be used for changing variables in helios KWL. Set is now implemented but without any checks. The published value will be wirtten as it is. Please read [Helios easyControls Modbus Gateway TCP/IP](https://www.heliosventilatoren.de/mbv/kwl_modbus_easycontrols_82269-001_0917.pdf) for the correct format and/or use the information in helios_Vers.json.
+Can be used for changing variables in helios KWL. Set is now implemented but without any checks. The published value will be written as it is. Please read [Helios easyControls Modbus Gateway TCP/IP](https://www.heliosventilatoren.de/mbv/kwl_modbus_easycontrols_82269-001_0917.pdf) for the correct format and/or use the information in helios_Vers.json.
 
 ### FHEM integration
 

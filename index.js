@@ -22,6 +22,8 @@ let mqttConnected;
 var variablesId = {};
 var variablesName = {};
 var variablesVarName = {};
+var watchdogTimer;
+var watchdogTriggered = false;
 
 /****************************
 Startup & Init
@@ -31,13 +33,22 @@ log.setLevel(config.verbosity);
 log.info(pkg.name + ' ' + pkg.version + ' starting');
 var helios = new Helios(config.jsonVariableTable, config.heliosIpAddress, config.modbusTcpPort);
 
+var mqttOptions;
+if (config.mqttNoRetain) {
+    mqttOptions = { retain: false, qos: config.mqttQos };
+} else {
+    mqttOptions = { retain: true, qos: config.mqttQos };
+}
+
+
+
 helios.on('get', function (varName, res) {
     log.debug('received get event from helios for ' + varName);
     const topic = config.name + '/status/' + varName;
     if (config.jsonValues) {
-        mqttPublish(topic, res, { retain: true });
+        mqttPublish(topic, res, mqttOptions);
     } else {
-        mqttPublish(topic, res.val, { retain: true });
+        mqttPublish(topic, res.val, mqttOptions);
     }
 });
 
@@ -49,10 +60,11 @@ Startup MQTT
 ****************************/
 
 log.info('mqtt trying to connect', config.mqttUrl);
+watchdogInit();
 
 const mqtt = Mqtt.connect(config.mqttUrl, {
     clientId: config.name + '_' + Math.random().toString(16).substr(2, 8),
-    will: { topic: config.name + '/connected', payload: '0', retain: true },
+    will: { topic: config.name + '/connected', payload: '0', retain: true, qos: config.mqttQos },
     username: config.mqttUsername,
     password: config.mqttPassword
 });
@@ -61,7 +73,7 @@ mqtt.on('connect', function () {
     mqttConnected = true;
 
     log.info('mqtt connected', config.mqttUrl);
-    mqtt.publish(config.name + '/connected', '1', { retain: true }); // TODO eventually set to '2' if target system already connected
+    mqtt.publish(config.name + '/connected', '1', mqttOptions); // TODO eventually set to '2' if target system already connected
 
     log.debug('mqtt subscribe', config.name + '/set/#');
     mqtt.subscribe(config.name + '/set/#');
@@ -136,6 +148,7 @@ function mqttPublish(topic, payload, options) {
         if (err) {
             log.error('mqtt publish', err);
         } else {
+            watchdogReload();
             log.debug('mqtt >', topic, payload);
         }
     });
@@ -145,16 +158,42 @@ function mqttPublish(topic, payload, options) {
 Functions
 ****************************/
 
-function postConnected() {
+function watchdogTrigger() {
+    if (config.watchdog > 0) {
+        if (watchdogTriggered) {
+            log.error('Watchdog time is up for another 60 seconds, exiting');
+            stop();
+        } else {
+            log.warn('Watchdog time is up, no data from helios for 60 seconds. Trying to read dummy value.');
+            helios.get("v00000", "wdg");
+        }    
+    }
+}
 
+function watchdogReload() {
+    if (config.watchdog > 0) {
+        log.debug('Watchdog reloaded');
+        clearTimeout(watchdogTimer);
+        watchdogTimer = setTimeout(watchdogTrigger, config.watchdog * 1000);
+    }
+}
+
+function watchdogInit() {
+    if (config.watchdog > 0) {
+        log.debug('Watchdog initialized');
+        watchdogTimer = setTimeout(watchdogTrigger, config.watchdog * 1000);
+    }
+}
+
+function postConnected() {
     if (mqttConnected) {
         if (helios.modbusConnected) {
-            mqtt.publish(config.name + '/connected', '2', { retain: true });
+            mqtt.publish(config.name + '/connected', '2', { retain: true, qos: config.mqttQos });
         } else {
-            mqtt.publish(config.name + '/connected', '1', { retain: true });
+            mqtt.publish(config.name + '/connected', '1', { retain: true, qos: config.mqttQos });
         }
     } else {
-        mqtt.publish(config.name + '/connected', '0', { retain: true });
+        mqtt.publish(config.name + '/connected', '0', { retain: true, qos: config.mqttQos });
     }
 }
 
