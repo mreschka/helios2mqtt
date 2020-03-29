@@ -12,6 +12,20 @@ Set is now implemented but without any checks. The published value will be writt
 
 Please read the --help output for commandline options. I tried to stick as close as possible to hm2mqtt.js.
 
+## History
+
+I bumped the version from 0.0.x to 0.1.x since there were now problems reported on github and there none on my own installation in the past years.
+
+The versions 0.1.0 to 0.1.5 were internal relases which were broken and so I removed them here instantly.
+
+New in 0.1.6:
+* corrected help text (default for watchdog)
+* integrated new variable bypass_offen (thanks to hhansen06 on github).
+* updated dependencies since there were security issues (see releasenotes on github)
+
+New in 0.1.7:
+* updated this readme
+
 ## Install
 
 `sudo npm install -g helios2mqtt`
@@ -50,7 +64,7 @@ Optionen:
                              additional info                           [boolean]
   -u, --mqtt-username        mqtt broker username
   -w, --watchdog             timeout for internal watchdog in seconds (default:
-                             60s)                                  [Standard: 0]
+                             0=off)                                [Standard: 0]
 ```
 ### Customization
 
