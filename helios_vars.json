@@ -3037,6 +3037,18 @@
       "datalen": 7,
       "modbuslen": 6,
       "comment": "R: Format: hh:mm W: Format: hh:mm"
-    }
+    },
+    {
+      "variable": "v02119",
+      "name": "bypass_offen",
+      "description": "Bypassklappe geöffnet (Abluft ohne Wärmetauscher)",
+      "updateinterval": 3600,
+      "access": "R",
+      "vartype": "bool",
+      "datalen": 1,
+      "modbuslen": 5,
+      "min": 0,
+      "max": 1
+    },
   ]
 }
