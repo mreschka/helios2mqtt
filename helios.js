@@ -4,11 +4,12 @@
 Includes
 ****************************/
 
-var log = require('yalm');
-var EventEmitter = require('events').EventEmitter;
-var util = require('util');
-var modbus = require('jsmodbus');
-var async = require('async');
+const log = require('yalm');
+const EventEmitter = require('events').EventEmitter;
+const util = require('util');
+const modbus = require('jsmodbus');
+const async = require('async');
+const net = require('net');
 
 /****************************
 Classdef
@@ -39,7 +40,7 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     log.debug('Helios loading variable-table', variableTableFile);
     const variableTable = require(variableTableFile);
 
-    for (let i = 0, len = variableTable.variables.length; i < len; i++) {//TODO 3 durch len ersetzen
+    for (let i = 0, len = variableTable.variables.length; i < len; i++) {
         let value = variableTable.variables[i];
         value.val = null;
         value.lc = null;
@@ -58,23 +59,22 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
 
     log.debug('Helios: starting modbus client');
 
-    this.modbusClient = modbus.client.tcp.complete({
-        'host': modbusIp,
-        'port': modbusPort,
-        'autoReconnect': false,
-        'reconnectTimeout': 1000,
-        'timeout': 5000,
-        'unitId': 180
-    });
+    this.modbusSocket = new net.Socket();
 
-    this.modbusClient.on('connect', function () {
+    this.modbusClient = modbus.client.TCP(modbusSocket, 180, 5000);
+    this.socketOptios = {
+        'host': modbusIp,
+        'port': modbusPort
+    };
+
+    this.modbusSocket.on('connect', function () {
         log.info('Helios connected to modbus slave.');
         self.modbusConnected = true;
         self.queue.resume();
         self.emit('connect');
     });
    
-    this.modbusClient.on('disconnect', function () {
+    this.modbusSocket.on('disconnect', function () {
         log.warn('Helios disconnected from modbus slave. Killing all queued tasks. Data loss possible.');
         self.modbusConnected = false;
         self.emit('disconnect');
@@ -83,7 +83,7 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
         self.queue.pause();
     });
 
-    this.modbusClient.on('error', function (err) {
+    this.modbusSocket.on('error', function (err) {
         log.error('Helios error with modbus slave. Killing all queued tasks. Data loss possible.');
         log.error(err);
         self.modbusConnected = false;
@@ -94,17 +94,17 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     });
 
     log.debug('Helios: modbus client trigger connect');
-    this.modbusClient.connect();
+    this.modbusSocket.connect(this.socketOptios);
 
     setInterval(function () {
         if (!self.modbusConnected) {
-            self.modbusClient.close();
+            self.modbusSocket.close();
             log.warn('Helios disconnected from modbus slave. Killing all queued tasks. Data loss possible.');
             self.queue.kill();
             self.queue = async.queue(queueWorker.bind(this), 1);
             self.queue.pause();
             log.info('Reconnecting modbus slave after disconnect.');
-            self.modbusClient.connect();
+            self.modbusSocket.connect();
         }
     }, 10000);
 }
@@ -114,12 +114,12 @@ util.inherits(Helios, EventEmitter);
 Functions
 ****************************/
 
-Helios.prototype.get = function(varName, reqId) {
+Helios.prototype.get = function (varName, reqId) {
     log.debug('Helios reading variable: ' + varName + ' req id ' + reqId);
 
     let self = this;
 
-    let task = { heliosVar: this.variablesName[varName], method: 'get', reqId: reqId, self: self};
+    let task = { heliosVar: this.variablesName[varName], method: 'get', reqId: reqId, self: self };
     this.queue.push(task, function (err) {
         if (err) {
             log.err('Helios error while ' + task.method + ' on ' + task.heliosVar.name + ':');
@@ -137,9 +137,9 @@ Helios.prototype.get = function(varName, reqId) {
             self.emit('get', task.heliosVar.name, res);
         }
     });
-}
+};
 
-Helios.prototype.set = function(varName, value) {
+Helios.prototype.set = function (varName, value) {
     log.debug('Helios writing variable: ' + varName + ' value ' + value);
 
     let self = this;
@@ -154,11 +154,11 @@ Helios.prototype.set = function(varName, value) {
             self.get(task.heliosVar.name, null);
         }
     });
-}
+};
 
-Helios.prototype.has = function(varName) {
+Helios.prototype.has = function (varName) {
     return typeof this.variablesName[varName] !== "undefined";
-}
+};
 
 function queueWorker(task, callback) {
     log.debug('Helios queue task started: ' + task);

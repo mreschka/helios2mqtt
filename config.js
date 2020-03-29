@@ -12,7 +12,7 @@ var config = require('yargs')
     .describe('mqtt-qos', 'mqtt qos setting')
     .describe('json-variable-table', 'A JSON file that maps helios vars to names and types')
     .describe('json-values', 'Publish values on status at mqtt as json including additional info')
-    .describe('watchdog', 'timeout for internal watchdog in seconds (default: 60s)')
+    .describe('watchdog', 'timeout for internal watchdog in seconds (default: 0=off)')
     .describe('h', 'show help')
     .boolean('json-values')
     .boolean('mqtt-no-retain')
@@ -42,7 +42,6 @@ var config = require('yargs')
         'w': 0,
         'v': 'info'
     })
-    //.config('config')
     .version()
     .help('help')
     .argv;
