@@ -176,10 +176,10 @@ function queueWorker(task, callback) {
                 task.self.modbusClient.readHoldingRegisters(1, task.heliosVar.modbuslen).then(
                     function (resp) {
                         log.debug('Helios get task modbus read for varname ' + task.heliosVar.variable + ' fininshed: ' +
-                            JSON.stringify(resp) + ' payload in ASCII: ' + resp.payload.toString('ascii'));
+                            JSON.stringify(resp) + ' payload in ASCII: ' + resp.response._body.valuesAsBuffer.toString('ascii'));
 
                         //V-Teil prüfen, abschneiden und nur Wert weitergeben:
-                        var responseArr = resp.payload.toString('ascii').split("=");
+                        var responseArr = resp.response._body.valuesAsBuffer.toString('ascii').split("=");
                         if (responseArr.length > 1 && responseArr[0] == task.heliosVar.variable) {
                             responseArr.shift();
                             
