@@ -61,7 +61,7 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
 
     this.modbusSocket = new net.Socket();
 
-    this.modbusClient = modbus.client.TCP(this.modbusSocket, 180, 5000);
+    this.modbusClient = new modbus.client.TCP(this.modbusSocket, 180, 5000);
     this.socketOptios = {
         'host': modbusIp,
         'port': modbusPort
