@@ -119,15 +119,15 @@ mqtt.on('message', (topic, payload) => {
     if (parts.length === 3 && parts[1] === 'set') {
         if (helios.has(parts[2])) {
             // Topic <name>/set/<variableName>
-            helios.set(parts[2], payload);
-            helios.get(parts[2], payload);
+            helios.set(parts[2], payload, 1);
+            helios.get(parts[2], payload, 1);
         } else {
             log.error('unknown variable', parts[2]);
         }
     } else if (parts.length === 3 && parts[1] === 'get') {
         if (helios.has(parts[2])) {
             // Topic <name>/get/<variableName>
-            helios.get(parts[2], payload);
+            helios.get(parts[2], payload, 1);
         } else {
             log.error('unknown variable', parts[2]);
         }

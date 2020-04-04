@@ -16,15 +16,18 @@ Please read the --help output for commandline options. I tried to stick as close
 
 I bumped the version from 0.0.x to 0.1.x since there were now problems reported on github and there none on my own installation in the past years.
 
-The versions 0.1.0 to 0.1.5 were internal relases which were broken and so I removed them here instantly.
+New in 0.1.8:
+* get and set commands via mqtt are now higher priority than internal timed reads to get faster responses esp. during startup where many reads are queued.
+
+New in 0.1.7:
+* updated this readme
 
 New in 0.1.6:
 * corrected help text (default for watchdog)
 * integrated new variable bypass_offen (thanks to hhansen06 on github).
 * updated dependencies since there were security issues (see releasenotes on github)
 
-New in 0.1.7:
-* updated this readme
+The versions 0.1.0 to 0.1.5 were internal relases which were broken and so I removed them here instantly.
 
 ## Install
 

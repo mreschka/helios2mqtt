@@ -29,7 +29,7 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     this.modbusPort = modbusPort;
     this.modbusConnected = false;
 
-    this.queue = async.queue(queueWorker.bind(this), 1);
+    this.queue = async.priorityQueue(queueWorker.bind(this), 1);
     this.queue.pause();
 
     // queue debug callback
@@ -114,13 +114,13 @@ util.inherits(Helios, EventEmitter);
 Functions
 ****************************/
 
-Helios.prototype.get = function (varName, reqId) {
+Helios.prototype.get = function (varName, reqId, prio=99) {
     log.debug('Helios reading variable: ' + varName + ' req id ' + reqId);
 
     let self = this;
 
     let task = { heliosVar: this.variablesName[varName], method: 'get', reqId: reqId, self: self };
-    this.queue.push(task, function (err) {
+    this.queue.push(task, prio, function (err) {
         if (err) {
             log.err('Helios error while ' + task.method + ' on ' + task.heliosVar.name + ':');
             log.err(err);
@@ -139,13 +139,13 @@ Helios.prototype.get = function (varName, reqId) {
     });
 };
 
-Helios.prototype.set = function (varName, value) {
+Helios.prototype.set = function (varName, value, prio = 99) {
     log.debug('Helios writing variable: ' + varName + ' value ' + value);
 
     let self = this;
 
     let task = { heliosVar: this.variablesName[varName], method: 'set', value: value, self: self };
-    this.queue.push(task, function (err) {
+    this.queue.push(task, prio, function (err) {
         if (err) {
             log.err('Helios error while ' + task.method + ' on ' + task.heliosVar.name + ':');
             log.err(err);
