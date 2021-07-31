@@ -33,10 +33,10 @@
   },
   "homepage": "https://github.com/mreschka/helios2mqtt",
   "dependencies": {
-    "async": "^2.6.3",
-    "jsmodbus": "^3.1.6",
-    "mqtt": "^3.0.0",
+    "async": "^3.2.0",
+    "jsmodbus": "^4.0.0",
+    "mqtt": "^4.2.0",
     "yalm": "^4.1.0",
-    "yargs": "^13.3.2"
+    "yargs": "^16.2.0"
   }
 }

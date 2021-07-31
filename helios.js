@@ -33,9 +33,9 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
     this.queue.pause();
 
     // queue debug callback
-    this.queue.drain = function () {
+    this.queue.drain(function () {
         log.debug('Helios queue: All items have been processed');
-    };
+    });
 
     log.debug('Helios loading variable-table', variableTableFile);
     const variableTable = require(variableTableFile);
