@@ -15,6 +15,10 @@ Please read the --help output for commandline options. I tried to stick as close
 ## History
 
 I bumped the version from 0.0.x to 0.1.x since there were now problems reported on github and there none on my own installation in the past years.
+Package Version 0.2.x ist updated to more recent dependencies. This requires Node >= 10 now. Please make sure you have at least Node 10 before updating.
+
+New in 0.2.0:
+* Updated dependencies to mitigate security problems.
 
 New in 0.1.8:
 * get and set commands via mqtt are now higher priority than internal timed reads to get faster responses esp. during startup where many reads are queued.
