@@ -17,7 +17,10 @@ Please read the --help output for commandline options. I tried to stick as close
 I bumped the version from 0.0.x to 0.1.x since there were now problems reported on github and there none on my own installation in the past years.
 Package Version 0.2.x ist updated to more recent dependencies. This requires Node >= 10 now. Please make sure you have at least Node 10 before updating.
 
-New in 0.2.0:
+New in 0.2.2:
+* Added the possibility to use a config file and/or ENV variables for configuration
+
+New in 0.2.1:
 * Updated dependencies to mitigate security problems.
 
 New in 0.1.8:
@@ -39,11 +42,15 @@ The versions 0.1.0 to 0.1.5 were internal relases which were broken and so I rem
 
 As hobbyquaker I also suggest to use pm2 to manage the hm2mqtt process (start on system boot, manage log files, ...). There is a really good howto at the [mqtt-smarthome repo](https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/howtos/homematic.md)
 
+If you want to use a config file instead of commandline otions simply write a valid json file including all you options. The variables are named like the short or long names of all the config switches. File can be named as you like but has to end in `.json`. Tell helios2mqtt where it is using the `--config` option.
+
+Using Docker ist possible as well (hhansen06 has written a docker file for you, see https://github.com/hhansen06/docker-helios2mqtt). You can choose to set the commandline option via ENV variables in this case. Prefix all the configuration switches using `HELIOS2MQTT_` and the add the name of the switch (doesn't matter whether short or long version, as long as you write them all in capital letters and replace - with _, eg. `HELIOS2MQTT_MQTT_PASSWORD`). If you want to use the config file you have to configure the path using `HELIOS2MQTT_CONFIG` env variable.
+
 ## Usage
 
 `helios2mqtt --help`
 
-```helios2mqtt 0.0.12
+```helios2mqtt 0.2.2
 Helios Easy Controls modbus tcp to mqtt-smarthome daemon.
 
 Usage: helios2mqtt [options]
@@ -52,6 +59,7 @@ Optionen:
   -v, --verbosity            possible values: "error", "warn", "info", "debug"
                                                               [Standard: "info"]
   -h, --help                 show help                                 [boolean]
+  --config                   Pfad zur JSON-Config Datei
   --version                  show version                              [boolean]
   -a, --helios-ip-address    ip address of helios easycontrols capable
                              ventilation system

@@ -18,6 +18,8 @@ var config = require('yargs')
     .boolean('mqtt-no-retain')
     .number('mqtt-qos')
     .choices('mqtt-qos', [0 ,1 ,2])
+    .config()
+    .env("HELIOS2MQTT")
     .alias({
         'a': 'helios-ip-address',
         'b': 'modbus-tcp-port',
