@@ -98,7 +98,7 @@ function Helios(variableTableFile, modbusIp, modbusPort) {
 
     setInterval(function () {
         if (!self.modbusConnected) {
-            self.modbusSocket.close();
+            self.modbusSocket.end();
             log.warn('Helios disconnected from modbus slave. Killing all queued tasks. Data loss possible.');
             self.queue.kill();
             self.queue = async.queue(queueWorker.bind(this), 1);
