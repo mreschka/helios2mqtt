@@ -8,7 +8,7 @@
 
 Based on the idea of [mqtt-smarthome](https://github.com/mqtt-smarthome) and especially on the work of hobbyquaker [hm2mqtt.js](https://github.com/hobbyquaker/hm2mqtt.js) I decided to build a bridge for my helios KWL system to mqtt.
 
-Set is now implemented but without any checks. The published value will be written as it is.
+Setting values from mqtt to helios is implemented but without any checks. The published value will be written as it is.
 
 Please read the --help output for commandline options. I tried to stick as close as possible to hm2mqtt.js.
 
@@ -16,6 +16,9 @@ Please read the --help output for commandline options. I tried to stick as close
 
 I bumped the version from 0.0.x to 0.1.x since there were now problems reported on github and there none on my own installation in the past years.
 Package Version 0.2.x ist updated to more recent dependencies. This requires Node >= 10 now. Please make sure you have at least Node 10 before updating.
+
+New in 0.2.3:
+* Updated dependencies to mitigate security problems.
 
 New in 0.2.2:
 * Added the possibility to use a config file and/or ENV variables for configuration
@@ -50,7 +53,7 @@ Using Docker ist possible as well (hhansen06 has written a docker file for you, 
 
 `helios2mqtt --help`
 
-```helios2mqtt 0.2.2
+```helios2mqtt 0.2.3
 Helios Easy Controls modbus tcp to mqtt-smarthome daemon.
 
 Usage: helios2mqtt [options]
